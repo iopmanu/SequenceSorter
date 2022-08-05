@@ -5,15 +5,18 @@
 
 template <typename T>
 class sequence {
-    virtual inline std::size_t get_size() const = 0;
-    virtual int find(T) = 0;
+    virtual inline std::size_t get_size() const noexcept= 0;
+    virtual std::size_t find(const T&) noexcept = 0;
 
-    virtual bool empty() = 0;
+    virtual inline T& get_first() const = 0;
+    virtual inline T& get_last() const = 0;
 
-    virtual void clear() = 0;
-    virtual void append(T) = 0;
-    virtual void prepend(T) = 0;
-    virtual void insert(T, int) = 0;
+    virtual inline bool empty() const noexcept= 0;
+
+    virtual void clear() noexcept = 0;
+    virtual void append(const T&) = 0;
+    virtual void prepend(const T&) = 0;
+    virtual void insert(const T&, std::size_t) = 0;
 };
 
 #endif  //SRC_SEQUENCE_HPP_

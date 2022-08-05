@@ -8,7 +8,7 @@
 #include "Sequence.hpp"
 
 template <typename T>
-class array_sequence {
+class array_sequence : virtual public sequence<T>{
 private:
     T *data;
     std::size_t capacity;
@@ -146,7 +146,7 @@ public:
     std::size_t find(const T& value) noexcept {
         size_t i;
         for (i = 0; i < this->size; i++) {
-            if (this[i] == value) {
+            if (this->data[i] == value) {
                 break;
             }
         }
@@ -156,6 +156,14 @@ public:
 
     void pop_back() {
         erase(this->size - 1);
+    }
+
+    void clear() noexcept {
+        delete[] data;
+        data = NULL;
+
+        size = 0;
+        capacity = 0;
     }
 };
 
