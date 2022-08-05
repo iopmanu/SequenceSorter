@@ -130,9 +130,35 @@ public:
 
         for (; fast != this->end() && index > 1;
              slow.operator++(), fast.operator++(), --index)
+            ;
 
         (slow.current_ptr())->next = new node<T>(value, fast.current_ptr());
         this->size++;
+    }
+
+    void erase(std::size_t index) {
+        if (index == 0) {
+            this->erase_first();
+            return;
+        }
+
+        assert(index < this->size);
+        assert(!this->empty());
+
+        list_iterator slow = this->begin(), fast = (this->begin().operator++());
+
+        for (; fast != this->end() && index > 1;
+             slow.operator++(), fast.operator++(), --index)
+            ;
+
+        (slow.current_ptr())->next = (fast.current_ptr())->next;
+        this->size--;
+    }
+
+    void erase_first() {
+        assert(!this->empty());
+
+        this->head = this->head->next;
     }
 };
 

@@ -31,8 +31,9 @@ int main() {
     source->insert(40, 1);
     source->append(50);
     source->prepend(30);
-    source->insert(70, 3);
-    std::cout << source << " " << " "  << source->get_size() << " " << source->get_first() << " " << source ->get_last();
-    
+    source->insert(70, 4);
+    std::cout << source << " " << " "  << source->get_size() << " " << source->get_first() << " " << source ->get_last() << std::endl;
+    source->erase(5);
+    std::cout << source;
     return 0;
 }
