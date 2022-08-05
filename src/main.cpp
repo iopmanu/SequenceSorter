@@ -25,6 +25,12 @@ int main() {
 
 
     auto source = new list_sequence<int>(array, 5);
-    std::cout << source;
+    source->prepend(10);
+    source->append(20);
+    source->insert(40, 1);
+    source->append(50);
+    source->prepend(30);
+    source->insert(70, 3);
+    std::cout << source << " " << " "  << source->get_size() << " " << source->get_first() << " " << source ->get_last();
     return 0;
 }

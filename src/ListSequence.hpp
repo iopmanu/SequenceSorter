@@ -28,7 +28,9 @@ public:
     public:
         explicit list_iterator( node<T>* _it ) noexcept: it( _it ) {}
 
-        list_iterator next() const noexcept { return it->next; }
+        node<T>* current_ptr() noexcept { return it; }
+
+        void set_next( node<T>* _next ) { it->next = _next; }
 
         const T& get_value() noexcept { return this->it->data; }
 
@@ -47,6 +49,21 @@ public:
 
     list_iterator end() const noexcept {
         return list_iterator( this->tail->next );
+    }
+
+    /*==================================INLINE_FUNCTIONS==================================*/
+    inline std::size_t get_size() const noexcept { return this->size; }
+
+    inline bool empty() const noexcept { return this->size == 0; }
+
+    inline T& get_first() const {
+        assert( !this->empty() );
+        return this->head->data;
+    }
+
+    inline T& get_last() const {
+        assert( !this->empty() );
+        return this->tail->data;
     }
 
     /*==================================CONSTRUCTORS==================================*/
@@ -90,7 +107,7 @@ public:
     }
 
     void prepend( const T& source ) {
-        if ( this->head = NULL ) {
+        if ( this->head == NULL ) {
             head = new node<T>( source, NULL );
             tail = head;
             size = 1;
@@ -99,6 +116,26 @@ public:
             head = new_head;
             size++;
         }
+    }
+
+    void insert( const T& value, std::size_t index ) {
+        if ( index >= this->size ) {
+            this->append( value );
+            return;
+        } else if ( index == 0 ) {
+            this->prepend( value );
+            return;
+        }
+
+        list_iterator slow = this->begin(),
+                      fast = ( this->begin().operator++() );
+
+        for ( ; fast != this->end() && index > 1;
+              slow.operator++(), fast.operator++(), --index )
+            ;
+
+        ( slow.current_ptr() )->next = new node<T>( value, fast.current_ptr() );
+        this->size++;
     }
 };
 
