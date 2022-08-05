@@ -110,6 +110,7 @@ public:
     void insert( const T& value, std::size_t index ) {
         if ( index >= this->size ) {
             this->append( value );
+            return;
         }
 
         if ( this->size == this->capacity ) {
