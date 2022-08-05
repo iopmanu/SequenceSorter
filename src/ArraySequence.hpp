@@ -1,5 +1,5 @@
 #ifndef SRC_DYNAMIC_ARRAY_HPP_
-#define SRC_DYNAMIC_ARRAY_HPP
+#define SRC_DYNAMIC_ARRAY_HPP_
 
 #include <iostream>
 #include <cstddef>
@@ -51,7 +51,7 @@ public:
         return out;
     }
 
-/*==================================ITERATOS==================================*/
+/*==================================ITERATORS==================================*/
     iterator begin() const noexcept {
         return data;
     }
@@ -72,8 +72,18 @@ public:
     inline bool empty() const noexcept {
         return this->size == 0;
     }
+    
+    inline T& get_first() const {
+        assert(!this->empty());
+        return this->data[0];
+    }
 
-/*==================================INSERTION==================================*/
+    inline T& get_last() const {
+        assert(!this->empty());
+        return this->data[this->size - 1];
+    }
+
+/*==================================METHODS==================================*/
     void resize(const std::size_t _capacity) {
         auto new_data = new T[_capacity];
 
@@ -127,9 +137,25 @@ public:
 
     void erase(std::size_t index) {
         assert(index < this->size);
+        assert(!this->empty());
 
         std::copy(this->begin() + index + 1, this->end(), this->begin() + index);
         this->size--;
+    }
+
+    std::size_t find(const T& value) noexcept {
+        size_t i;
+        for (i = 0; i < this->size; i++) {
+            if (this[i] == value) {
+                break;
+            }
+        }
+
+        return i;
+    }
+
+    void pop_back() {
+        erase(this->size - 1);
     }
 };
 
