@@ -17,35 +17,34 @@ private:
 
 public:
     /*==================================CONSTRUCTORS==================================*/
-    explicit array_sequence() noexcept:
-        data( new T[0] ), capacity( 0 ), size( 0 ) {}
+    explicit array_sequence() noexcept: data(new T[0]), capacity(0), size(0) {}
 
-    explicit array_sequence( std::size_t _capacity ) noexcept:
-        data( new T[_capacity] ), capacity( _capacity ), size( 0 ) {}
+    explicit array_sequence(std::size_t _capacity) noexcept:
+        data(new T[_capacity]), capacity(_capacity), size(0) {}
 
-    array_sequence( T* source, std::size_t count ) noexcept:
-        capacity( count ), size( count ) {
-        data = std::move( source );
+    array_sequence(T* source, std::size_t count) noexcept:
+        capacity(count), size(count) {
+        data = std::move(source);
     }
 
     /*==================================OPERATORS==================================*/
-    inline T& operator[]( const std::size_t& index ) {
-        assert( ( index >= 0 ) == ( index < this->size ) );
+    inline T& operator[](const std::size_t& index) {
+        assert((index >= 0) == (index < this->size));
         return this->data[index];
     }
 
-    array_sequence& operator=( array_sequence<T>&& source ) noexcept {
-        size = std::move( source.size );
-        capacity = std::move( source.capacity );
+    array_sequence& operator=(array_sequence<T>&& source) noexcept {
+        size = std::move(source.size);
+        capacity = std::move(source.capacity);
 
-        data = std::move( source.data );
+        data = std::move(source.data);
 
         return *this;
     }
 
-    friend std::ostream& operator<<( std::ostream& out,
-                                     array_sequence<T>* source ) noexcept {
-        for ( iterator it = source->begin(); it != source->end(); ++it ) {
+    friend std::ostream& operator<<(std::ostream& out,
+                                    array_sequence<T>* source) noexcept {
+        for (iterator it = source->begin(); it != source->end(); ++it) {
             out << *it << " ";
         }
         out << std::endl;
@@ -66,80 +65,80 @@ public:
     inline bool empty() const noexcept { return this->size == 0; }
 
     inline T& get_first() const {
-        assert( !this->empty() );
+        assert(!this->empty());
         return this->data[0];
     }
 
     inline T& get_last() const {
-        assert( !this->empty() );
+        assert(!this->empty());
         return this->data[this->size - 1];
     }
 
     /*==================================METHODS==================================*/
-    void resize( const std::size_t _capacity ) {
+    void resize(const std::size_t _capacity) {
         auto new_data = new T[_capacity];
 
-        std::copy( this->begin(), this->end(), new_data );
+        std::copy(this->begin(), this->end(), new_data);
         this->capacity = _capacity;
 
-        data = std::move( new_data );
+        data = std::move(new_data);
     }
 
-    void append( const T& source ) {
-        if ( this->size == this->capacity ) {
-            this->resize( capacity * 2 );
+    void append(const T& source) {
+        if (this->size == this->capacity) {
+            this->resize(capacity * 2);
         }
 
         this->data[size++] = source;
     }
 
-    void prepend( const T& source ) {
-        if ( this->size == this->capacity ) {
-            this->resize( capacity * 2 );
+    void prepend(const T& source) {
+        if (this->size == this->capacity) {
+            this->resize(capacity * 2);
         }
 
         auto new_data = new T[capacity];
-        assert( new_data != NULL );
+        assert(new_data != NULL);
 
         new_data[0] = source;
-        std::copy( this->begin(), this->end(), new_data + 1 );
-        data = std::move( new_data );
+        std::copy(this->begin(), this->end(), new_data + 1);
+        data = std::move(new_data);
         this->size++;
     }
 
-    void insert( const T& value, std::size_t index ) {
-        if ( index >= this->size ) {
-            this->append( value );
+    void insert(const T& value, std::size_t index) {
+        if (index >= this->size) {
+            this->append(value);
             return;
         }
 
-        if ( this->size == this->capacity ) {
-            this->resize( capacity * 2 );
+        if (this->size == this->capacity) {
+            this->resize(capacity * 2);
         }
 
         auto new_data = new T[capacity];
-        assert( new_data != NULL );
+        assert(new_data != NULL);
 
         new_data[index] = value;
-        std::copy( this->begin(), this->begin() + index, new_data );
-        std::copy( this->begin() + index, this->end(), new_data + index + 1 );
-        data = std::move( new_data );
+        std::copy(this->begin(), this->begin() + index, new_data);
+        std::copy(this->begin() + index, this->end(), new_data + index + 1);
+        data = std::move(new_data);
         this->size++;
     }
 
-    void erase( std::size_t index ) {
-        assert( index < this->size );
-        assert( !this->empty() );
+    void erase(std::size_t index) {
+        assert(index < this->size);
+        assert(!this->empty());
 
         std::copy(
-            this->begin() + index + 1, this->end(), this->begin() + index );
+            this->begin() + index + 1, this->end(), this->begin() + index);
         this->size--;
     }
 
-    std::size_t find( const T& value ) noexcept {
+    std::size_t find(const T& value) noexcept {
         size_t i;
-        for ( i = 0; i < this->size; i++ ) {
-            if ( this->data[i] == value ) {
+        for (i = 0; i < this->size; i++) {
+            if (this->data[i] == value) {
                 break;
             }
         }
@@ -147,7 +146,7 @@ public:
         return i;
     }
 
-    void pop_back() { erase( this->size - 1 ); }
+    void pop_back() { erase(this->size - 1); }
 
     void clear() noexcept {
         delete[] data;
