@@ -7,6 +7,8 @@
 #include <cstddef>
 #include <iostream>
 
+#define INIT_SIZE 1
+
 template <typename T> struct node {
     T data;
     node* next;
@@ -14,7 +16,7 @@ template <typename T> struct node {
     node(const T& _data, node* _next): data(_data), next(_next) {}
 };
 
-template <typename T> class list_sequence {
+template <typename T> class list_sequence : virtual public sequence<T> {
 private:
     node<T>* head = NULL;
     node<T>* tail = NULL;
@@ -30,9 +32,9 @@ public:
 
         node<T>* current_ptr() noexcept { return it; }
 
-        void set_next(node<T>* _next) { it->next = _next; }
-
         const T& get_value() noexcept { return this->it->data; }
+
+        void set_ptr(node<T>* _ptr) noexcept { this->it = _ptr; }
 
         bool operator!=(const list_iterator& to_compare) const noexcept {
             return this->it != to_compare.it;
@@ -70,7 +72,7 @@ public:
     explicit list_sequence() noexcept: head(NULL), tail(NULL), size(0) {}
 
     explicit list_sequence(const T& value):
-        head(new node<T>(value, NULL)), size(1) {
+        head(new node<T>(value, NULL)), size(INIT_SIZE) {
         tail = head;
     }
 
@@ -83,6 +85,10 @@ public:
     /*==================================OPERATORS==================================*/
     friend std::ostream& operator<<(std::ostream& out,
                                     list_sequence<T>* source) noexcept {
+        if (source->head == NULL) {
+            return out;
+        }
+
         for (list_iterator iter = source->begin(); iter != source->end();
              iter.operator++()) {
             out << iter.get_value() << " ";
@@ -97,7 +103,7 @@ public:
         if (this->head == NULL) {
             head = new node<T>(source, NULL);
             tail = head;
-            size = 1;
+            size = INIT_SIZE;
         } else {
             tail->next = new node<T>(source, NULL);
             tail = tail->next;
@@ -109,7 +115,7 @@ public:
         if (this->head == NULL) {
             head = new node<T>(source, NULL);
             tail = head;
-            size = 1;
+            size = INIT_SIZE;
         } else {
             auto new_head = new node<T>(source, head);
             head = new_head;
@@ -145,7 +151,7 @@ public:
         assert(index < this->size);
         assert(!this->empty());
 
-        list_iterator slow = this->begin(), fast = (this->begin().operator++());
+        list_iterator slow = this->begin(), fast = this->begin().operator++();
 
         for (; fast != this->end() && index > 1;
              slow.operator++(), fast.operator++(), --index)
@@ -159,6 +165,28 @@ public:
         assert(!this->empty());
 
         this->head = this->head->next;
+        this->size--;
+    }
+
+    void pop_back() { erase(this->size - 1); }
+
+    std::size_t find(const T& value) noexcept {
+        std::size_t pos = 0;
+        list_iterator slow = this->begin();
+
+        for (; slow != this->end(); slow.operator++(), pos++) {
+            if (slow.get_value() == value) {
+                break;
+            }
+        }
+
+        return pos;
+    }
+
+    void clear() noexcept {
+        this->head = NULL;
+        this->tail = NULL;
+        this->size = 0;
     }
 };
 
