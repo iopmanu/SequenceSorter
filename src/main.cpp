@@ -23,7 +23,7 @@ int main() {
     source->pop_back();
     source->insert(1000, 200);
     std::cout << std::endl << source << source->find(50) << " " << source->operator[](2);
-
+    
     /*auto source = new list_sequence<int>(array, 5);
     source->prepend(10);
     source->append(20);
@@ -47,9 +47,7 @@ int main() {
     source->pop_back();
     source->pop_back();
     source->pop_back();*/
-    source = Isorter::bubble_sort(source, compare_int);
+    source = Isorter::shaker_sort(source, compare_int);
     std::cout << std:: endl << source;
-    /*std::cout << source << source->get_size();
-    std::cout << std::endl << source->operator[](4);*/
     return 0;
 }
