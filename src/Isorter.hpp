@@ -55,6 +55,40 @@ public:
 
         return source;
     }
+
+    template <class Contain, typename T>
+    static Contain *qsort(Contain *source, bool (*cmpf)(T, T),
+                          const std::size_t left, const std::size_t right) {
+        assert(source != NULL);
+
+        if (left < right) {
+            std::size_t pivot = partition(source, cmpf, left, right);
+
+            qsort(source, cmpf, left, pivot - 1);
+            qsort(source, cmpf, pivot + 1, right);
+        }
+
+        return source;
+    }
+
+    template <class Contain, typename T>
+    static std::size_t partition(Contain *source, bool (*cmpf)(T, T),
+                                 std::size_t left, std::size_t right) {
+        std::size_t i = left, j = left;
+        T pivot = source->operator[](right);
+
+        while (i <= right) {
+            if (cmpf(source->operator[](i), pivot)) {
+                i++;
+            } else {
+                swap(source->operator[](i), source->operator[](j));
+                i++;
+                j++;
+            }
+        }
+
+        return j - 1;
+    }
 };
 
 bool compare_int(int first, int other) { return first > other; }
