@@ -9,14 +9,16 @@
 
 #define INIT_SIZE 1
 
-template <typename T> struct node {
+template <typename T>
+struct node {
     T data;
     node* next;
 
-    node(const T& _data, node* _next): data(_data), next(_next) {}
+    node(const T& _data, node* _next) : data(_data), next(_next) {}
 };
 
-template <typename T> class list_sequence : virtual public sequence<T> {
+template <typename T>
+class list_sequence : virtual public sequence<T> {
 private:
     node<T>* head = NULL;
     node<T>* tail = NULL;
@@ -28,11 +30,11 @@ public:
         node<T>* it;
 
     public:
-        explicit list_iterator(node<T>* _it) noexcept: it(_it) {}
+        explicit list_iterator(node<T>* _it) noexcept : it(_it) {}
 
         node<T>* current_ptr() noexcept { return it; }
 
-        const T& get_value() noexcept { return this->it->data; }
+        T& get_value() noexcept { return this->it->data; }
 
         void set_ptr(node<T>* _ptr) noexcept { this->it = _ptr; }
 
@@ -69,14 +71,15 @@ public:
     }
 
     /*==================================CONSTRUCTORS==================================*/
-    explicit list_sequence() noexcept: head(NULL), tail(NULL), size(0) {}
+    explicit list_sequence() noexcept : head(NULL), tail(NULL), size(0) {}
 
-    explicit list_sequence(const T& value):
-        head(new node<T>(value, NULL)), size(INIT_SIZE) {
+    explicit list_sequence(const T& value)
+        : head(new node<T>(value, NULL)), size(INIT_SIZE) {
         tail = head;
     }
 
-    explicit list_sequence(T* source, std::size_t count) noexcept: size(count) {
+    explicit list_sequence(T* source, std::size_t count) noexcept
+        : size(count) {
         for (std::size_t i = 0; i < count; i++) {
             this->append(source[i]);
         }
@@ -98,7 +101,7 @@ public:
         return out;
     }
 
-    inline const T& operator[](const std::size_t& index) {
+    inline T& operator[](const std::size_t& index) {
         assert(index < this->size);
         assert(!this->empty());
 
@@ -202,4 +205,4 @@ public:
     }
 };
 
-#endif // SRC_LIST_SEQUENCE_HPP_
+#endif  // SRC_LIST_SEQUENCE_HPP_

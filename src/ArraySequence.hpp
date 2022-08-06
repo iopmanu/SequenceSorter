@@ -7,7 +7,8 @@
 #include <cstddef>
 #include <iostream>
 
-template <typename T> class array_sequence : virtual public sequence<T> {
+template <typename T>
+class array_sequence : virtual public sequence<T> {
 private:
     T* data;
     std::size_t capacity;
@@ -17,13 +18,13 @@ private:
 
 public:
     /*==================================CONSTRUCTORS==================================*/
-    explicit array_sequence() noexcept: data(new T[0]), capacity(0), size(0) {}
+    explicit array_sequence() noexcept : data(new T[0]), capacity(0), size(0) {}
 
-    explicit array_sequence(std::size_t _capacity) noexcept:
-        data(new T[_capacity]), capacity(_capacity), size(0) {}
+    explicit array_sequence(std::size_t _capacity) noexcept
+        : data(new T[_capacity]), capacity(_capacity), size(0) {}
 
-    array_sequence(T* source, std::size_t count) noexcept:
-        capacity(count), size(count) {
+    array_sequence(T* source, std::size_t count) noexcept
+        : capacity(count), size(count) {
         data = std::move(source);
     }
 
@@ -130,8 +131,8 @@ public:
         assert(index < this->size);
         assert(!this->empty());
 
-        std::copy(
-            this->begin() + index + 1, this->end(), this->begin() + index);
+        std::copy(this->begin() + index + 1, this->end(),
+                  this->begin() + index);
         this->size--;
     }
 
@@ -158,4 +159,4 @@ public:
     }
 };
 
-#endif // SRC_DYNAMIC_ARRAY_HPP
+#endif  // SRC_DYNAMIC_ARRAY_HPP

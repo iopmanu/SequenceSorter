@@ -1,10 +1,11 @@
 #include <iostream>
 #include "ArraySequence.hpp"
 #include "ListSequence.hpp"
+#include "Isorter.hpp"
 
 int main() {
     int array[] = {1, 2, 3, 4, 5};
-    /*auto source = new array_sequence<int>(array, 5);
+    auto source = new array_sequence<int>(array, 5);
     source->prepend(6);
     source->insert(7, 2);
     source->append(10);
@@ -22,10 +23,8 @@ int main() {
     source->pop_back();
     source->insert(1000, 200);
     std::cout << std::endl << source << source->find(50) << " " << source->operator[](2);
-    source->clear();
-    */
 
-    auto source = new list_sequence<int>(array, 5);
+    /*auto source = new list_sequence<int>(array, 5);
     source->prepend(10);
     source->append(20);
     source->insert(40, 1);
@@ -47,9 +46,10 @@ int main() {
     std::cout << source << source->get_size() << std::endl;
     source->pop_back();
     source->pop_back();
-    source->pop_back();
-    std::cout << source << source->get_size();
-    std::cout << std::endl <<source->operator[](4);
-    source->clear();
+    source->pop_back();*/
+    source = Isorter::bubble_sort(source, compare_int);
+    std::cout << std:: endl << source;
+    /*std::cout << source << source->get_size();
+    std::cout << std::endl << source->operator[](4);*/
     return 0;
 }
