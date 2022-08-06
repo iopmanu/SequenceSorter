@@ -21,7 +21,7 @@ int main() {
     std::cout << source << std::endl << source->get_size();
     source->pop_back();
     source->insert(1000, 200);
-    std::cout << std::endl << source << source->find(50);
+    std::cout << std::endl << source << source->find(50) << " " << source->operator[](2);
     source->clear();
     */
 
@@ -49,7 +49,7 @@ int main() {
     source->pop_back();
     source->pop_back();
     std::cout << source << source->get_size();
+    std::cout << std::endl <<source->operator[](4);
     source->clear();
-    std::cout << source;
     return 0;
 }

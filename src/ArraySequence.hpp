@@ -29,7 +29,7 @@ public:
 
     /*==================================OPERATORS==================================*/
     inline T& operator[](const std::size_t& index) {
-        assert((index >= 0) == (index < this->size));
+        assert(index < this->size);
         return this->data[index];
     }
 
