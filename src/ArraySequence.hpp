@@ -137,6 +137,7 @@ public:
 
     std::size_t find(const T& value) noexcept {
         std::size_t i = 0;
+
         for (; i < this->size; i++) {
             if (this->data[i] == value) {
                 break;

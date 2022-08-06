@@ -135,8 +135,7 @@ public:
         list_iterator slow = this->begin(), fast = (this->begin().operator++());
 
         for (; fast != this->end() && index > 1;
-             slow.operator++(), fast.operator++(), --index)
-            ;
+             slow.operator++(), fast.operator++(), --index);
 
         (slow.current_ptr())->next = new node<T>(value, fast.current_ptr());
         this->size++;
@@ -154,8 +153,7 @@ public:
         list_iterator slow = this->begin(), fast = this->begin().operator++();
 
         for (; fast != this->end() && index > 1;
-             slow.operator++(), fast.operator++(), --index)
-            ;
+             slow.operator++(), fast.operator++(), --index);
 
         (slow.current_ptr())->next = (fast.current_ptr())->next;
         this->size--;
