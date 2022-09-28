@@ -5,9 +5,9 @@
 
 template <typename T>
 void swap(T &first, T &other) {
-    T tmp = first;
-    first = other;
-    other = tmp;
+    T tmp = std::move(first);
+    first = std::move(other);
+    other = std::move(tmp);
 }
 
 class Isorter {
