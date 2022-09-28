@@ -74,18 +74,17 @@ public:
     template <class Contain, typename T>
     static std::size_t partition(Contain *source, bool (*cmpf)(T, T),
                                  std::size_t left, std::size_t right) {
-        std::size_t i = left, j = left;
+        std::size_t i = left - 1, j = left;
         T pivot = source->operator[](right);
 
-        while (i <= right) {
-            if (cmpf(source->operator[](i), pivot)) {
+        for (; j < right; j++) {
+            if (cmpf(source->operator[](j), pivot)) {
                 i++;
-            } else {
                 swap(source->operator[](i), source->operator[](j));
-                i++;
-                j++;
             }
         }
+
+        swap(source->operator[](j), source->operator[](right));
 
         return j - 1;
     }
@@ -104,8 +103,9 @@ public:
     }
 
     template <class Contain, typename T>
-    static void merge(Contain *source, bool (*cmpf)(T, T), const std::size_t &left,
-               const std::size_t &mid, const std::size_t &right) {
+    static void merge(Contain *source, bool (*cmpf)(T, T),
+                      const std::size_t &left, const std::size_t &mid,
+                      const std::size_t &right) {
         std::size_t first_subarray_length = mid - left + 1;
         std::size_t second_subarray_length = right - mid;
 
