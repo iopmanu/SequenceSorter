@@ -143,7 +143,7 @@ public:
             this->append(value);
             return;
         } else if (index == 0) {
-          this->prepend(value);
+            this->prepend(value);
             return;
         }
 
@@ -157,17 +157,17 @@ public:
         this->size++;
     }
 
-    void rev_out(node<T> *ptr, bool is_first) {
+    void rev_out(node<T>* ptr, bool is_first) {
         if (ptr == nullptr && is_first) {
             rev_out(this->head, false);
-        } else if (ptr == nullptr && !is_first){
+        } else if (ptr == nullptr && !is_first) {
             return;
         }
 
         if (ptr != nullptr) {
             rev_out(ptr->next, false);
         }
-        
+
         if (ptr != nullptr) {
             std::cout << ptr->data;
         }
