@@ -8,6 +8,7 @@ class sequence {
 public:
     virtual inline std::size_t get_size() const noexcept = 0;
     virtual std::size_t find(const T&) noexcept = 0;
+    virtual ~sequence() {}
 
     virtual inline T& get_first() const = 0;
     virtual inline T& get_last() const = 0;
