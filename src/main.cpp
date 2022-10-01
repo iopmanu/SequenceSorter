@@ -13,6 +13,8 @@ int main() {
 
     std::cout << source;
 
+    delete source;
+
     /*auto source = new array_sequence<int>(array, 5);
     std::cout << "Please input sort type\n";
     std::string desision;
