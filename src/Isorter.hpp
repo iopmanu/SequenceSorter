@@ -196,13 +196,12 @@ public:
                 slow.operator++();
             }
         }
-        
+
         literator<T> copy = slow;
         copy.operator++();
         slow.current_ptr()->next = NULL;
         first_sublist = head;
         second_sublist = copy;
-        
     }
 
     template <typename T>
