@@ -220,16 +220,16 @@ public:
         this->size = 0;
     }
 
-    ~list_sequence(){
-        node<T> *current = this->head;
-        node<T> *to_delete = current;
+    ~list_sequence() {
+        node<T>* current = this->head;
+        node<T>* to_delete = current;
 
         while (current != NULL) {
             current = current->next;
             delete to_delete;
             to_delete = current;
         }
-    }  
+    }
 };
 
 #endif  // SRC_LIST_SEQUENCE_HPP_
