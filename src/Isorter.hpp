@@ -196,12 +196,13 @@ public:
                 slow.operator++();
             }
         }
-
+        
         literator<T> copy = slow;
         copy.operator++();
         slow.current_ptr()->next = NULL;
         first_sublist = head;
         second_sublist = copy;
+        
     }
 
     template <typename T>
@@ -209,7 +210,6 @@ public:
                                        literator<T> second_sublist,
                                        bool (*cmpf)(T, T)) {
         literator<T> result = first_sublist;
-        // std::cout << result.get_value();
 
         if (first_sublist.current_ptr() == NULL) {
             return second_sublist.current_ptr();
@@ -217,7 +217,7 @@ public:
             return first_sublist.current_ptr();
         }
 
-        if (cmpf(first_sublist.get_value(), second_sublist.get_value())) {
+        if (!cmpf(first_sublist.get_value(), second_sublist.get_value())) {
             result.set_ptr(first_sublist.current_ptr());
             result.current_ptr()->next = Isorter_list::merge_sorted_lists<T>(
                 first_sublist.operator++(), second_sublist, cmpf);

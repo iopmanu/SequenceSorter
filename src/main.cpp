@@ -5,9 +5,9 @@
 #include "clocking.hpp"
 
 int main() {
-    int array[] = {6, 7, 8, 9, 112, 5, 3, 4, 1, 2};
+    int array[] = {1,3,5,6,8,2,4,7,9,10};
     
-    auto source = new list_sequence<int>(array, 9);
+    auto source = new list_sequence<int>(array, 10);
     std::cout << source;
     Isorter_list::merge_sort_list(source, compare_int);
 
