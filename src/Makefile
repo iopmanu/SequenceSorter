@@ -7,7 +7,7 @@ BUILD=../build/
 main: main.o
 	$(CC) $(FLAGS) -o $(BUILD)program main.o 
 
-main.o: main.cpp clocking.hpp ArraySequence.hpp Sequence.hpp ListSequence.hpp Isorter.hpp
+main.o: main.cpp clocking.hpp ArraySequence.hpp Sequence.hpp ListSequence.hpp Isorter.hpp testing.hpp
 	$(CC) $(FLAGS) -c main.cpp
 
 

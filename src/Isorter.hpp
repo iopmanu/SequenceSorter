@@ -149,6 +149,87 @@ public:
     }
 };
 
+class Isorter_list {
+public:
+    template <typename T>
+    using literator = typename list_sequence<T>::list_iterator;
+
+    template <typename T>
+    static void merge_sort_list(list_sequence<T> *source, bool (*cmpf)(T, T)) {
+        literator<T> source_to_merge = source->begin();
+        merge_sort_list_recursive(source_to_merge, cmpf);
+    }
+
+    template <typename T>
+    static void merge_sort_list_recursive(literator<T> &source,
+                                          bool (*cmpf)(T, T)) {
+        literator<T> head = source;
+        literator<T> next = source;
+        next.operator++();
+        literator<T> first_sublist(NULL), second_sublist(NULL);
+
+        if (head.current_ptr() == NULL || next.current_ptr() == NULL) {
+            return;
+        }
+
+        Isorter_list::spliting_list<T>(head, first_sublist, second_sublist);
+
+        merge_sort_list_recursive(first_sublist, cmpf);
+        merge_sort_list_recursive(second_sublist, cmpf);
+
+        head.set_ptr(Isorter_list::merge_sorted_lists(first_sublist,
+                                                      second_sublist, cmpf));
+        source = head;
+    }
+
+    template <typename T>
+    static void spliting_list(literator<T> head, literator<T> &first_sublist,
+                              literator<T> &second_sublist) {
+        literator<T> slow = head, fast = head;
+        fast.operator++();
+
+        while (fast.current_ptr() != NULL) {
+            fast.operator++();
+
+            if (fast.current_ptr() != NULL) {
+                fast.operator++();
+                slow.operator++();
+            }
+        }
+
+        literator<T> copy = slow;
+        copy.operator++();
+        slow.current_ptr()->next = NULL;
+        first_sublist = head;
+        second_sublist = copy;
+    }
+
+    template <typename T>
+    static node<T> *merge_sorted_lists(literator<T> first_sublist,
+                                       literator<T> second_sublist,
+                                       bool (*cmpf)(T, T)) {
+        literator<T> result = first_sublist;
+
+        if (first_sublist.current_ptr() == NULL) {
+            return second_sublist.current_ptr();
+        } else if (second_sublist.current_ptr() == NULL) {
+            return first_sublist.current_ptr();
+        }
+
+        if (!cmpf(first_sublist.get_value(), second_sublist.get_value())) {
+            result.set_ptr(first_sublist.current_ptr());
+            result.current_ptr()->next = Isorter_list::merge_sorted_lists<T>(
+                first_sublist.operator++(), second_sublist, cmpf);
+        } else {
+            result.set_ptr(second_sublist.current_ptr());
+            result.current_ptr()->next = Isorter_list::merge_sorted_lists<T>(
+                first_sublist, second_sublist.operator++(), cmpf);
+        }
+
+        return result.current_ptr();
+    }
+};
+
 bool compare_int(int first, int other) { return first > other; }
 
 #endif  // SRC_ISORTER_HPP_
