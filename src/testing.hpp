@@ -22,7 +22,7 @@ enum test_status {
 
 template <typename T1, typename T2>
 bool equal(const T1& first, const T2& second) {
-    // assert(first == second);
+    assert(first == second);
     if (first != second)
         return ERROR;
     else
