@@ -17,7 +17,7 @@ bool is_merge(const std::string &sort_type) { return sort_type == "merge"; }
 template <class Contain>
 void randomize_container_int(Contain *source) {
     srand(time(NULL));
-    for (std::size_t i = 0; i < 10000; i++) {
+    for (std::size_t i = 0; i < 1000; i++) {
         source->append(1 + rand() % RAND_MAX);
     }
 }
