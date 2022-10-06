@@ -11,8 +11,8 @@ int main() {
         std::cout << "TESTS FAILED";
     }
 
-    int array[] = {5, 4, 3, 2, 1};
-    auto source = new array_sequence<int>(array, 5);
+    //int array[] = {5, 4, 3, 2, 1};
+    auto source = new list_sequence<int>();
     std::cout << "Please input sort type\n";
     std::string desision;
     std::cin >> desision;

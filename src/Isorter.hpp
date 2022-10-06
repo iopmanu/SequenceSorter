@@ -17,6 +17,8 @@ public:
     template <typename T>
     using literator = typename list_sequence<T>::list_iterator;
 
+    /*==================================MERGE_SORT==================================*/
+
     template <class Contain, typename T>
     static void merge_sort_list(Contain *source, bool (*cmpf)(T, T)) {
         if constexpr (std::is_same<Contain, list_sequence<T> >::value) {
@@ -93,10 +95,102 @@ public:
 
         return result.current_ptr();
     }
+
+    /*==================================QUICK_SORT==================================*/
+
+    template <class Contain, typename T>
+    static Contain *qsort_list_launch(Contain *source, bool (*cmpf)(T, T)) {
+        if constexpr (std::is_same<Contain, list_sequence<T> >::value) {
+            node<T> *tmp = (qsort_list((source->begin().current_ptr()),
+                                       (source->preend().current_ptr()), cmpf));
+            source->set_head(tmp);
+        }
+
+        return source;
+    }
+
+    template <typename T>
+    static node<T> *qsort_list(node<T> *head, node<T> *end,
+                               bool (*cmpf)(T, T)) {
+        if (head == NULL || head == end) {
+            return head;
+        }
+
+        node<T> *new_head = NULL, *new_tail = NULL;
+
+        node<T> *pivot = partition_list(head, end, &new_head, &new_tail, cmpf);
+
+        if (new_head != pivot && new_head != new_tail) {
+            node<T> *tmp = new_head;
+
+            while (tmp->next != pivot) {
+                tmp = tmp->next;
+            }
+            tmp->next = NULL;
+
+            new_head = qsort_list(new_head, tmp, cmpf);
+
+            tmp = get_tail(new_head);
+            tmp->next = pivot;
+
+            pivot->next = qsort_list(pivot->next, new_tail, cmpf);
+        }
+
+        return new_head;
+    }
+
+    template <typename T>
+    static node<T> *partition_list(node<T> *head, node<T> *end,
+                                   node<T> **new_head, node<T> **new_end,
+                                   bool (*cmpf)(T, T)) {
+        node<T> *pivot = end;
+        node<T> *previous = NULL, *current = head, *tail = pivot;
+
+        while (current != pivot) {
+            if (!cmpf(current->data, pivot->data)) {
+                if ((*new_head) == NULL) {
+                    (*new_head) = current;
+                }
+
+                previous = current;
+                current = current->next;
+            } else {
+                if (previous != NULL) {
+                    previous->next = current->next;
+                }
+
+                node<T> *tmp = current->next;
+                current->next = NULL;
+
+                tail->next = current;
+                tail = current;
+
+                current = tmp;
+            }
+        }
+
+        if ((*new_head) == NULL) {
+            (*new_head) = pivot;
+        }
+
+        (*new_end) = tail;
+
+        return pivot;
+    }
+
+    template <typename T>
+    static node<T> *get_tail(node<T> *source) {
+        while (source->next != NULL && source != NULL) {
+            source = source->next;
+        }
+
+        return source;
+    }
 };
 
 class Isorter {
 public:
+    /*==================================BUBBLE==================================*/
     template <class Contain, typename T>
     static Contain *bubble_sort(Contain *source, bool (*cmpf)(T, T)) {
         assert(source != NULL);
@@ -110,6 +204,8 @@ public:
 
         return source;
     }
+
+    /*==================================SHAKER==================================*/
 
     template <class Contain, typename T>
     static Contain *shaker_sort(Contain *source, bool (*cmpf)(T, T)) {
@@ -141,10 +237,16 @@ public:
         return source;
     }
 
+    /*==================================QUICK==================================*/
+
     template <class Contain, typename T>
     static Contain *qsort(Contain *source, bool (*cmpf)(T, T),
                           const std::size_t left, const std::size_t right) {
         assert(source != NULL);
+
+        if constexpr (std::is_same<Contain, list_sequence<T> >::value) {
+            return Isorter_list::qsort_list_launch(source, cmpf);
+        }
 
         if (left < right) {
             std::size_t pivot = partition(source, cmpf, left, right);
@@ -173,6 +275,8 @@ public:
 
         return j - 1;
     }
+
+    /*==================================MERGE==================================*/
 
     template <class Contain, typename T>
     static void merge_sort(Contain *source, bool (*cmpf)(T, T),

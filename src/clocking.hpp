@@ -17,8 +17,8 @@ bool is_merge(const std::string &sort_type) { return sort_type == "merge"; }
 template <class Contain>
 void randomize_container_int(Contain *source) {
     srand(time(NULL));
-    for (std::size_t i = 0; i < 1000; i++) {
-        source->append(1 + rand() % RAND_MAX);
+    for (std::size_t i = 0; i < 20; i++) {
+        source->append(1 + rand() % 1000);
     }
 }
 
@@ -34,7 +34,7 @@ void clocking_sorts(Contain *source, bool (*cmpf)(T, T),
     } else if (is_shaker(sort_type)) {
         Isorter::shaker_sort(source, cmpf);
     } else if (is_quick(sort_type)) {
-        Isorter::qsort(source, cmpf, 0, source->get_size() - 1);
+        source = Isorter::qsort(source, cmpf, 0, source->get_size() - 1);
     } else if (is_merge(sort_type)) {
         Isorter::merge_sort(source, cmpf, 0, source->get_size() - 1);
     } else {

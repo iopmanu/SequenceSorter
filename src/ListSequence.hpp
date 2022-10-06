@@ -55,6 +55,8 @@ public:
         return list_iterator(this->tail->next);
     }
 
+    list_iterator preend() const noexcept { return list_iterator(this->tail); }
+
     /*==================================INLINE_FUNCTIONS==================================*/
     inline std::size_t get_size() const noexcept { return this->size; }
 
@@ -83,6 +85,17 @@ public:
         for (std::size_t i = 0; i < count; i++) {
             this->append(source[i]);
         }
+    }
+
+    explicit list_sequence(node<T>* _head) : head(_head) {
+        node<T>* current = _head;
+
+        while (current->next != NULL) {
+            this->append(current->data);
+            current = current->next;
+        }
+
+        this->tail = current;
     }
 
     /*==================================OPERATORS==================================*/
@@ -115,14 +128,14 @@ public:
 
     /*==================================METHODS==================================*/
     void append(const T& source) {
-        if (this->head == NULL) {
+        if (head == NULL) {
             head = new node<T>(source, NULL);
             tail = head;
             size = INIT_SIZE;
         } else {
             tail->next = new node<T>(source, NULL);
             tail = tail->next;
-            size++;
+            ++size;
         }
     }
 
@@ -136,6 +149,18 @@ public:
             head = new_head;
             size++;
         }
+    }
+
+    void set_head(node<T>* _head) {
+        this->head = _head;
+
+        node<T>* current = _head;
+
+        while (current->next != NULL) {
+            current = current->next;
+        }
+
+        this->tail = current;
     }
 
     void insert(const T& value, std::size_t index) {
